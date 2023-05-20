@@ -9,9 +9,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // openapi3
-    implementation("org.springdoc:springdoc-openapi-ui:$openapi3Version")
-    implementation("org.springdoc:springdoc-openapi-webflux-ui:$openapi3Version")
-    implementation("org.springdoc:springdoc-openapi-kotlin:$openapi3Version")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$openapi3Version")
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:$openapi3Version")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 tasks.getByName("bootJar") {
