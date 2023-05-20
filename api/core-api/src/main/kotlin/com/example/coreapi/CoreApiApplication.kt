@@ -1,11 +1,11 @@
-package com.example.vouchersystem
+package com.example.coreapi
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class VoucherSystemApplication
+class CoreApiApplication
 
 fun main(args: Array<String>) {
-    runApplication<VoucherSystemApplication>(*args)
+    runApplication<CoreApiApplication>(*args)
 }
