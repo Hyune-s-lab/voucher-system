@@ -1,8 +1,5 @@
-plugins {
-
-}
-
 dependencies {
+    implementation(project(":store:core-db"))
 }
 
 tasks.getByName("bootJar") {
