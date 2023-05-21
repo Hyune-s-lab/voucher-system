@@ -7,3 +7,12 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+---
+spring.config.activate.on-profile: local
+
+---
+spring.config.activate.on-profile: dev
+
+---
+spring.config.activate.on-profile: prod
