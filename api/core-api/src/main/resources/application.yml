@@ -2,3 +2,8 @@ springdoc:
   swagger-ui:
     tagsSorter: alpha
     path: /swagger-ui.html
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher

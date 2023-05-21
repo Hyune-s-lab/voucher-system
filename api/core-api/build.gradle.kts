@@ -5,6 +5,8 @@ plugins {
 dependencies {
     val openapi3Version: String by project
 
+    implementation(project(":domain:core-domain"))
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
 
