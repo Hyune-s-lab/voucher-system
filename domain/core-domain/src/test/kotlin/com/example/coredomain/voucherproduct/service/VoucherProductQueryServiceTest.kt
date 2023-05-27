@@ -1,4 +1,4 @@
-package com.example.coredomain.service
+package com.example.coredomain.voucherproduct.service
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldNotBe

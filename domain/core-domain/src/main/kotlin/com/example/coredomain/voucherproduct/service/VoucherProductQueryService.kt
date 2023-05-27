@@ -1,7 +1,7 @@
-package com.example.coredomain.service
+package com.example.coredomain.voucherproduct.service
 
-import com.example.coredomain.model.VoucherProduct
-import com.example.coredomain.repository.VoucherProductQueryRepository
+import com.example.coredomain.voucherproduct.model.VoucherProduct
+import com.example.coredomain.voucherproduct.repository.VoucherProductQueryRepository
 import org.springframework.stereotype.Service
 
 @Service

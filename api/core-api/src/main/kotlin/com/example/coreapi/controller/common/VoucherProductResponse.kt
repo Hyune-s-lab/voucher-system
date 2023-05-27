@@ -1,6 +1,6 @@
 package com.example.coreapi.controller.common
 
-import com.example.coredomain.model.VoucherProduct
+import com.example.coredomain.voucherproduct.model.VoucherProduct
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(title = "상품권종 응답")

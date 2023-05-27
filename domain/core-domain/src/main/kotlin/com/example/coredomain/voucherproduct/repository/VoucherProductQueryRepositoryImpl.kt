@@ -1,7 +1,7 @@
-package com.example.coredomain.repository
+package com.example.coredomain.voucherproduct.repository
 
-import com.example.coredomain.model.VoucherProduct
 import com.example.coredomain.support.mock.VoucherProductRepositoryMockAdapter
+import com.example.coredomain.voucherproduct.model.VoucherProduct
 import org.springframework.stereotype.Repository
 
 @Repository

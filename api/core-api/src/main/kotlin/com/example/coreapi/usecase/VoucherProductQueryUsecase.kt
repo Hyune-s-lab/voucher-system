@@ -1,7 +1,7 @@
 package com.example.coreapi.usecase
 
 import com.example.coreapi.controller.common.VoucherProductResponse
-import com.example.coredomain.service.VoucherProductQueryService
+import com.example.coredomain.voucherproduct.service.VoucherProductQueryService
 import org.springframework.stereotype.Service
 
 @Service

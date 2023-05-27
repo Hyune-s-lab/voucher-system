@@ -1,4 +1,4 @@
-package com.example.coredomain.model
+package com.example.coredomain.voucherproduct.model
 
 data class VoucherProduct(
     val code: String,

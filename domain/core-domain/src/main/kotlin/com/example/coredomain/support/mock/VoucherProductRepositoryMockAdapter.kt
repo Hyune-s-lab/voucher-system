@@ -1,6 +1,6 @@
 package com.example.coredomain.support.mock
 
-import com.example.coredomain.model.VoucherProduct
+import com.example.coredomain.voucherproduct.model.VoucherProduct
 import org.springframework.stereotype.Component
 
 @Component
