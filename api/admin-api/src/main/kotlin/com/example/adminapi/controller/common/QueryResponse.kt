@@ -1,4 +1,4 @@
-package com.example.coreapi.controller.common
+package com.example.adminapi.controller.common
 
 import io.swagger.v3.oas.annotations.media.Schema
 

@@ -1,4 +1,4 @@
-package com.example.coreapi.controller.common
+package com.example.adminapi.controller.common
 
 import com.example.coredomain.voucherproduct.model.VoucherProduct
 import io.swagger.v3.oas.annotations.media.Schema

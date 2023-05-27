@@ -5,9 +5,9 @@ import com.example.coredomain.voucherproduct.model.VoucherProduct
 import org.springframework.stereotype.Repository
 
 @Repository
-class VoucherProductQueryRepositoryImpl(
+class VoucherProductRepositoryImpl(
     private val voucherProductRepositoryMockAdapter: VoucherProductRepositoryMockAdapter
-) : VoucherProductQueryRepository {
+) : VoucherProductRepository {
     override fun findByCode(code: String): VoucherProduct? {
         return voucherProductRepositoryMockAdapter.findByCode(code)
     }
