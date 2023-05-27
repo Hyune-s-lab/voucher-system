@@ -6,12 +6,12 @@ import io.kotest.matchers.shouldNotBe
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class ContractQueryServiceTest(
-    private val contractQueryService: ContractQueryService
+class ContractServiceTest(
+    private val contractService: ContractService
 ) : DescribeSpec({
     describe("계약을 조회할 수 있습니다.") {
         context("code == CT0001") {
-            val target = contractQueryService.findByCode("CT0001")
+            val target = contractService.findByCode("CT0001")
 
             it("exists") {
                 target shouldNotBe null

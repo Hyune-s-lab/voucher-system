@@ -5,10 +5,14 @@ import com.example.coredomain.contract.repository.ContractRepository
 import org.springframework.stereotype.Service
 
 @Service
-class ContractQueryService(
+class ContractService(
     private val contractRepository: ContractRepository
 ) {
     fun findByCode(code: String): Contract? {
         return contractRepository.findByCode(code)
+    }
+
+    fun create(contract: Contract): Contract {
+        return contractRepository.save(contract)
     }
 }

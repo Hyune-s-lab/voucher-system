@@ -11,4 +11,8 @@ class ContractRepositoryImpl(
     override fun findByCode(code: String): Contract? {
         return contractRepositoryMockAdapter.findByCode(code)
     }
+
+    override fun save(contract: Contract): Contract {
+        return contractRepositoryMockAdapter.save(contract)
+    }
 }

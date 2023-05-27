@@ -38,4 +38,9 @@ class ContractRepositoryMockAdapter(
     fun findByCode(code: String): Contract? {
         return map[code]
     }
+
+    fun save(contract: Contract): Contract {
+        map[contract.code] = contract
+        return contract
+    }
 }
