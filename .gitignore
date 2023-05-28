@@ -142,4 +142,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+/**/.jqwik-database
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,kotlin,gradle

@@ -35,9 +35,9 @@ subprojects {
     apply(plugin = "kotlin-spring")
 
     dependencies {
+        val fixtureMonkeyVersion: String by project
         val kotestVersion: String by project
         val kotestExtVersion: String by project
-        val fixtureMonkeyVersion: String by project
 
         implementation("org.springframework.boot:spring-boot-starter")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -51,6 +51,7 @@ subprojects {
         testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
         testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
         testImplementation("io.kotest:kotest-property:$kotestVersion")
+        testImplementation("io.kotest:kotest-extensions-now:${kotestVersion}")
         implementation("io.kotest.extensions:kotest-extensions-spring:$kotestExtVersion")
     }
 
