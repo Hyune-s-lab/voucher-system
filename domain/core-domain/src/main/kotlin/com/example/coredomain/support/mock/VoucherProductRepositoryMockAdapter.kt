@@ -26,4 +26,9 @@ class VoucherProductRepositoryMockAdapter {
     fun findByCode(code: String): VoucherProduct? {
         return map[code]
     }
+
+    fun save(voucherProduct: VoucherProduct): VoucherProduct {
+        map[voucherProduct.code] = voucherProduct
+        return voucherProduct
+    }
 }

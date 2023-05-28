@@ -11,4 +11,8 @@ class VoucherProductRepositoryImpl(
     override fun findByCode(code: String): VoucherProduct? {
         return voucherProductRepositoryMockAdapter.findByCode(code)
     }
+
+    override fun save(voucherProduct: VoucherProduct): VoucherProduct {
+        return voucherProductRepositoryMockAdapter.save(voucherProduct)
+    }
 }
