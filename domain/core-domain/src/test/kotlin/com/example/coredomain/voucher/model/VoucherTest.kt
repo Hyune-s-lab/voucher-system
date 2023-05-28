@@ -2,6 +2,7 @@ package com.example.coredomain.voucher.model
 
 import com.example.coredomain.common.type.VoucherStatus
 import com.example.coredomain.testutil.TestFixture
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -32,43 +33,105 @@ class VoucherTest : DescribeSpec({
             }
         }
 
-        context("상품권0 상태 변경: 발행 -> 사용가능") {
-            it("상태=USABLE") {
+        context("상품권0 상태 변경: 발행 -> 사용완료") {
+            it("상태=ISSUED") {
+                vouchers[0].status shouldBe VoucherStatus.ISSUED
+            }
 
+            val exception = shouldThrow<IllegalStateException> {
+                vouchers[0].statusToUsed()
+            }
+
+            it("IllegalStateException - 변경 불가능한 상품권 상태") {
+                exception.message shouldBe "변경 불가능한 상품권 상태"
+            }
+
+            it("상태=ISSUED") {
+                vouchers[0].status shouldBe VoucherStatus.ISSUED
+            }
+        }
+
+        context("상품권0 상태 변경: 발행 -> 사용가능") {
+            it("상태=ISSUED") {
+                vouchers[0].status shouldBe VoucherStatus.ISSUED
+            }
+
+            vouchers[0].statusToUsable()
+
+            it("상태=USABLE") {
+                vouchers[0].status shouldBe VoucherStatus.USABLE
             }
 
             it("history size=2") {
-
+                vouchers[0].histories.size shouldBe 2
             }
         }
 
         context("상품권0 상태 변경: 사용가능 -> 사용완료") {
-            it("상태=USED") {
+            it("상태=USABLE") {
+                vouchers[0].status shouldBe VoucherStatus.USABLE
+            }
 
+            vouchers[0].statusToUsed()
+
+            it("상태=USED") {
+                vouchers[0].status shouldBe VoucherStatus.USED
             }
 
             it("history size=3") {
+                vouchers[0].histories.size shouldBe 3
+            }
+        }
 
+        context("상품권0 상태 변경: 사용완료 -> 사용가능") {
+            it("상태=USED") {
+                vouchers[0].status shouldBe VoucherStatus.USED
+            }
+
+            val exception = shouldThrow<IllegalStateException> {
+                vouchers[0].statusToUsable()
+            }
+
+            it("IllegalStateException - 변경 불가능한 상품권 상태") {
+                exception.message shouldBe "변경 불가능한 상품권 상태"
+            }
+
+            it("상태=USED") {
+                vouchers[0].status shouldBe VoucherStatus.USED
             }
         }
 
         context("상품권1 상태 변경: 발행 -> 사용불가") {
-            it("상태=UNUSABLE") {
+            it("상태=ISSUED") {
+                vouchers[1].status shouldBe VoucherStatus.ISSUED
+            }
 
+            vouchers[1].statusToUnusable()
+
+            it("상태=UNUSABLE") {
+                vouchers[1].status shouldBe VoucherStatus.UNUSABLE
             }
 
             it("history size=2") {
-
+                vouchers[1].histories.size shouldBe 2
             }
         }
 
         context("상품권2 상태 변경: 사용가능 -> 사용불가") {
-            it("상태=UNUSABLE") {
+            vouchers[2].statusToUsable()
 
+            it("상태=USABLE") {
+                vouchers[2].status shouldBe VoucherStatus.USABLE
+            }
+
+            vouchers[2].statusToUnusable()
+
+            it("상태=UNUSABLE") {
+                vouchers[2].status shouldBe VoucherStatus.UNUSABLE
             }
 
             it("history size=3") {
-
+                vouchers[2].histories.size shouldBe 3
             }
         }
     }
