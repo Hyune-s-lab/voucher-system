@@ -17,11 +17,11 @@ class VoucherService(
         return voucherRepository.findByCode(code)
     }
 
-    fun create(contractCode: String, voucherProductCode: String): Voucher {
+    fun issue(contractCode: String, voucherProductCode: String): Voucher {
         val contract = contractRepository.findByCode(contractCode)
             ?: throw IllegalArgumentException("존재하지 않는 계약")
 
-        if (!contract.canPublishProduct(LocalDate.now())) {
+        if (!contract.canIssue(LocalDate.now())) {
             throw IllegalArgumentException("발행가능기간이 유효하지 않은 계약")
         }
 
@@ -34,7 +34,8 @@ class VoucherService(
 
         return voucherRepository.save(
             Voucher(
-                voucherProduct = voucherProduct
+                contract = contract,
+                product = voucherProduct
             )
         )
     }

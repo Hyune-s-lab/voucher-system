@@ -17,7 +17,7 @@ data class Contract(
         return voucherProducts.contains(voucherProduct)
     }
 
-    fun canPublishProduct(now: LocalDate): Boolean {
+    fun canIssue(now: LocalDate): Boolean {
         return now.isAfter(startDate) && now.isBefore(endDate.plusDays(1))
     }
 }
