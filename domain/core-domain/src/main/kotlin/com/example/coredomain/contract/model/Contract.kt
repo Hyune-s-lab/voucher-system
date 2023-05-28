@@ -12,4 +12,12 @@ data class Contract(
     val endDate: LocalDate,
     val description: String? = null,
     val voucherProducts: List<VoucherProduct>,
-)
+) {
+    fun hasProduct(voucherProduct: VoucherProduct): Boolean {
+        return voucherProducts.contains(voucherProduct)
+    }
+
+    fun canPublishProduct(now: LocalDate): Boolean {
+        return now.isAfter(startDate) && now.isBefore(endDate.plusDays(1))
+    }
+}

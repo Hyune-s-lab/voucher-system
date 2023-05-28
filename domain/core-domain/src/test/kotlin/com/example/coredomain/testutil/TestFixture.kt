@@ -41,7 +41,7 @@ object TestFixture {
     val 계약_계약기간_중 = listOf(
         Contract(
             merchantId = "KP0001",
-            code = "CT0001",
+            code = "CT0002",
             name = "KP기업 발행 가능 계약 1",
             totalAmountLimit = 10_000_000L,
             startDate = LocalDate.now().minusYears(1),
@@ -56,14 +56,14 @@ object TestFixture {
     val 계약_계약기간_후 = listOf(
         Contract(
             merchantId = "KP0001",
-            code = "CT0002",
+            code = "CT0003",
             name = "KP기업 만료된 계약 1",
             totalAmountLimit = 30_000_000L,
             startDate = LocalDate.now().plusYears(1),
             endDate = LocalDate.now().plusYears(3),
             description = "만료된 계약",
             voucherProducts = listOf(
-                상품권종[1],
+                상품권종[0],
                 상품권종[2],
             )
         )
