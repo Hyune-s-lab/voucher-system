@@ -1,7 +1,9 @@
 package com.example.coredomain.voucher.service
 
 import com.example.coredomain.contract.repository.ContractRepository
+import com.example.coredomain.testutil.TestFixture
 import com.example.coredomain.voucherproduct.repository.VoucherProductRepository
+import io.kotest.core.spec.Spec
 import io.kotest.core.spec.style.DescribeSpec
 import org.springframework.boot.test.context.SpringBootTest
 
@@ -36,4 +38,17 @@ class VoucherServiceTest(
             }
         }
     }
-})
+}) {
+    init {
+        TestFixture.상품권종.forEach { voucherProductRepository.save(it) }
+        TestFixture.발행가능_계약.forEach { contractRepository.save(it) }
+        TestFixture.계약기간_만료_계약.forEach { contractRepository.save(it) }
+    }
+
+    override suspend fun afterSpec(spec: Spec) {
+        super.afterSpec(spec)
+        contractRepository.deleteAll()
+        voucherProductRepository.deleteAll()
+    }
+}
+

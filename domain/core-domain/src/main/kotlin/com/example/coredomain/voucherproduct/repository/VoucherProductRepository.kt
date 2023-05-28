@@ -6,4 +6,5 @@ interface VoucherProductRepository {
     fun findByCode(code: String): VoucherProduct?
 
     fun save(voucherProduct: VoucherProduct): VoucherProduct
+    fun deleteAll()
 }

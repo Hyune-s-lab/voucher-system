@@ -15,4 +15,8 @@ class VoucherRepositoryMockAdapter {
         map[voucher.code] = voucher
         return voucher
     }
+
+    fun deleteAll() {
+        map.clear()
+    }
 }

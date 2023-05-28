@@ -8,4 +8,5 @@ interface VoucherRepository {
     fun findByCode(code: String): Voucher?
 
     fun save(voucher: Voucher): Voucher
+    fun deleteAll()
 }

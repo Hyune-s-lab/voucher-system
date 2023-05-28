@@ -15,4 +15,8 @@ class ContractRepositoryImpl(
     override fun save(contract: Contract): Contract {
         return contractRepositoryMockAdapter.save(contract)
     }
+
+    override fun deleteAll() {
+        contractRepositoryMockAdapter.deleteAll()
+    }
 }

@@ -6,4 +6,5 @@ interface ContractRepository {
     fun findByCode(code: String): Contract?
 
     fun save(contract: Contract): Contract
+    fun deleteAll()
 }

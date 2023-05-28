@@ -15,4 +15,8 @@ class VoucherRepositoryImpl(
     override fun save(voucher: Voucher): Voucher {
         return voucherRepositoryMockAdapter.save(voucher)
     }
+
+    override fun deleteAll() {
+        voucherRepositoryMockAdapter.deleteAll()
+    }
 }
