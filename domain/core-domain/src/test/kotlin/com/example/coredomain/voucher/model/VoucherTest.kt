@@ -34,7 +34,7 @@ class VoucherTest : DescribeSpec({
     }
 
     describe("상품권0 상태 변경: 발행 -> 사용완료(예외) -> 사용가능 -> 사용완료 -> 사용가능(예외)") {
-        context("발행 -> 사용완료") {
+        context("발행 -> 사용완료(예외)") {
             val exception = shouldThrow<IllegalStateException> {
                 vouchers[0].statusToUsed()
             }
@@ -49,7 +49,7 @@ class VoucherTest : DescribeSpec({
         }
 
         context("발행 -> 사용가능") {
-            vouchers[0].statusToUsable()
+            vouchers[0].statusToUsable(LocalDate.now().plusYears(1))
 
             it("상태=USABLE") {
                 vouchers[0].status shouldBe VoucherStatus.USABLE
@@ -72,9 +72,9 @@ class VoucherTest : DescribeSpec({
             }
         }
 
-        context("사용완료 -> 사용가능") {
+        context("사용완료 -> 사용가능(예외)") {
             val exception = shouldThrow<IllegalStateException> {
-                vouchers[0].statusToUsable()
+                vouchers[0].statusToUsable(LocalDate.now().plusYears(1))
             }
 
             it("IllegalStateException - 변경 불가능한 상품권 상태") {
@@ -87,9 +87,9 @@ class VoucherTest : DescribeSpec({
         }
     }
 
-    describe("상품권1 상태 변경: 발행 -> 사용불가") {
+    describe("상품권1 상태 변경: 발행 -> 사용불가 -> 사용가능(예외)") {
         context("발행 -> 사용불가") {
-            vouchers[1].statusToUnusable(LocalDate.now().plusYears(1))
+            vouchers[1].statusToUnusable()
 
             it("상태=UNUSABLE") {
                 vouchers[1].status shouldBe VoucherStatus.UNUSABLE
@@ -99,11 +99,25 @@ class VoucherTest : DescribeSpec({
                 vouchers[1].histories.size shouldBe 2
             }
         }
+
+        context("사용불가 -> 사용가능(예외)") {
+            val exception = shouldThrow<IllegalStateException> {
+                vouchers[1].statusToUsable(LocalDate.now().plusYears(1))
+            }
+
+            it("IllegalStateException - 변경 불가능한 상품권 상태") {
+                exception.message shouldBe "변경 불가능한 상품권 상태"
+            }
+
+            it("상태=UNUSABLE") {
+                vouchers[1].status shouldBe VoucherStatus.UNUSABLE
+            }
+        }
     }
 
     describe("상품권2 상태 변경: 발행 -> 사용가능 -> 사용불가") {
         context("발행 -> 사용가능") {
-            vouchers[2].statusToUsable()
+            vouchers[2].statusToUsable(LocalDate.now().plusYears(1))
 
             it("상태=USABLE") {
                 vouchers[2].status shouldBe VoucherStatus.USABLE
@@ -111,7 +125,7 @@ class VoucherTest : DescribeSpec({
         }
 
         context("사용가능 -> 사용불가") {
-            vouchers[2].statusToUnusable(LocalDate.now().plusYears(1))
+            vouchers[2].statusToUnusable()
 
             it("상태=UNUSABLE") {
                 vouchers[2].status shouldBe VoucherStatus.UNUSABLE

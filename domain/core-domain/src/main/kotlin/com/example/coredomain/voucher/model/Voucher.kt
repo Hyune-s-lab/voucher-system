@@ -36,7 +36,7 @@ data class Voucher(
     val issuedAt: LocalDateTime
         get() = histories.first { it.voucherStatus == VoucherStatus.ISSUED }.createAt
 
-    fun statusToUsable() {
+    fun statusToUsable(expiredDate: LocalDate) {
         if (status != VoucherStatus.ISSUED) {
             throw IllegalStateException("변경 불가능한 상품권 상태")
         }
@@ -47,9 +47,11 @@ data class Voucher(
                 voucherStatus = VoucherStatus.USABLE
             )
         )
+
+        this.expiredDate = expiredDate
     }
 
-    fun statusToUnusable(expiredDate: LocalDate) {
+    fun statusToUnusable() {
         if (!listOf(VoucherStatus.ISSUED, VoucherStatus.USABLE).contains(status)) {
             throw IllegalStateException("변경 불가능한 상품권 상태")
         }
@@ -60,8 +62,6 @@ data class Voucher(
                 voucherStatus = VoucherStatus.UNUSABLE
             )
         )
-
-        this.expiredDate = expiredDate
     }
 
     fun statusToUsed() {
