@@ -9,7 +9,7 @@ import java.util.*
 
 data class Voucher(
     val code: String = UUID.randomUUID().toString().uppercase().replace("-", ""),
-    var expiredDate: LocalDate? = null,
+    var usableEndDate: LocalDate? = null,
     val description: String? = null,
 
     val contract: Contract,
@@ -23,7 +23,7 @@ data class Voucher(
 ) {
     val status: VoucherStatus
         get() {
-            expiredDate?.let { date ->
+            usableEndDate?.let { date ->
                 if (LocalDate.now().isAfter(date)) {
                     return VoucherStatus.EXPIRED
                 }
@@ -32,11 +32,13 @@ data class Voucher(
             return histories.last().voucherStatus
         }
 
-
     val issuedAt: LocalDateTime
         get() = histories.first { it.voucherStatus == VoucherStatus.ISSUED }.createAt
 
-    fun statusToUsable(expiredDate: LocalDate) {
+    val usableStartDate: LocalDate?
+        get() = histories.firstOrNull { it.voucherStatus == VoucherStatus.USABLE }?.createAt?.toLocalDate()
+
+    fun statusToUsable(usableEndDate: LocalDate) {
         if (status != VoucherStatus.ISSUED) {
             throw IllegalStateException("변경 불가능한 상품권 상태")
         }
@@ -48,7 +50,7 @@ data class Voucher(
             )
         )
 
-        this.expiredDate = expiredDate
+        this.usableEndDate = usableEndDate
     }
 
     fun statusToUnusable() {
@@ -64,8 +66,12 @@ data class Voucher(
         )
     }
 
-    fun statusToUsed() {
+    fun statusToUsed(usedDate: LocalDate = LocalDate.now()) {
         if (status != VoucherStatus.USABLE) {
+            throw IllegalStateException("변경 불가능한 상품권 상태")
+        }
+
+        if (usedDate.isBefore(usableStartDate) || usedDate.isAfter(usableEndDate)) {
             throw IllegalStateException("변경 불가능한 상품권 상태")
         }
 

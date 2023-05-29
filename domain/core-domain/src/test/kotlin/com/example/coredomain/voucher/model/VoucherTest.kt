@@ -26,6 +26,13 @@ class VoucherTest : DescribeSpec({
             }
         }
 
+        it("usableStartDate=null, usableEndDate=null") {
+            vouchers.forEach {
+                it.usableStartDate shouldBe null
+                it.usableEndDate shouldBe null
+            }
+        }
+
         it("history size=1") {
             vouchers.forEach {
                 it.histories.size shouldBe 1
@@ -53,6 +60,11 @@ class VoucherTest : DescribeSpec({
 
             it("상태=USABLE") {
                 vouchers[0].status shouldBe VoucherStatus.USABLE
+            }
+
+            it("usableStartDate=not null, usableEndDate=not null") {
+                vouchers[0].usableStartDate shouldNotBe null
+                vouchers[0].usableEndDate shouldNotBe null
             }
 
             it("history size=2") {
@@ -121,6 +133,15 @@ class VoucherTest : DescribeSpec({
 
             it("상태=USABLE") {
                 vouchers[2].status shouldBe VoucherStatus.USABLE
+            }
+
+            it("usableStartDate=not null, usableEndDate=not null") {
+                vouchers[2].usableStartDate shouldNotBe null
+                vouchers[2].usableEndDate shouldNotBe null
+            }
+
+            it("history size=2") {
+                vouchers[2].histories.size shouldBe 2
             }
         }
 
