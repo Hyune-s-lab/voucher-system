@@ -12,8 +12,9 @@ class VoucherTest : DescribeSpec({
     val (contract, product) = TestFixture.계약_계약기간_중[0] to TestFixture.상품권종[0]
     lateinit var vouchers: List<Voucher>
 
-    describe("상품권 3장을 발행 합니다.") {
+    describe("상품권 4장을 발행 합니다.") {
         vouchers = listOf(
+            Voucher(contract = contract, product = product),
             Voucher(contract = contract, product = product),
             Voucher(contract = contract, product = product),
             Voucher(contract = contract, product = product),
@@ -154,6 +155,52 @@ class VoucherTest : DescribeSpec({
 
             it("history size=3") {
                 vouchers[2].histories.size shouldBe 3
+            }
+        }
+    }
+    describe("상품권3 상태 변경: 발행 -> 사용가능 -> 사용완료(예외): 유효기간시작일자 전 -> 사용완료(예외): 유효기간시작일자 후") {
+        context("발행 -> 사용가능") {
+            vouchers[3].statusToUsable(LocalDate.now().plusYears(1))
+
+            it("상태=USABLE") {
+                vouchers[3].status shouldBe VoucherStatus.USABLE
+            }
+
+            it("usableStartDate=not null, usableEndDate=not null") {
+                vouchers[3].usableStartDate shouldNotBe null
+                vouchers[3].usableEndDate shouldNotBe null
+            }
+
+            it("history size=2") {
+                vouchers[3].histories.size shouldBe 2
+            }
+        }
+
+        context("사용가능 -> 사용완료(예외): 유효기간시작일자 전") {
+            val exception = shouldThrow<IllegalStateException> {
+                vouchers[3].statusToUsed(LocalDate.now().minusYears(2))
+            }
+
+            it("IllegalStateException - 변경 불가능한 상품권 상태") {
+                exception.message shouldBe "변경 불가능한 상품권 상태"
+            }
+
+            it("상태=USABLE") {
+                vouchers[3].status shouldBe VoucherStatus.USABLE
+            }
+        }
+
+        context("사용가능 -> 사용완료(예외): 유효기간시작일자 후") {
+            val exception = shouldThrow<IllegalStateException> {
+                vouchers[3].statusToUsed(LocalDate.now().plusYears(2))
+            }
+
+            it("IllegalStateException - 변경 불가능한 상품권 상태") {
+                exception.message shouldBe "변경 불가능한 상품권 상태"
+            }
+
+            it("상태=USABLE") {
+                vouchers[3].status shouldBe VoucherStatus.USABLE
             }
         }
     }
