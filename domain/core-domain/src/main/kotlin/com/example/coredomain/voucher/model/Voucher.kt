@@ -40,7 +40,7 @@ data class Voucher(
 
     fun statusToUsable(usableEndDate: LocalDate) {
         if (status != VoucherStatus.ISSUED) {
-            throw IllegalStateException("변경 불가능한 상품권 상태")
+            throw IllegalStateException("사용가능으로 변경할 수 없는 상태")
         }
 
         histories.add(
@@ -55,7 +55,7 @@ data class Voucher(
 
     fun statusToUnusable() {
         if (!listOf(VoucherStatus.ISSUED, VoucherStatus.USABLE).contains(status)) {
-            throw IllegalStateException("변경 불가능한 상품권 상태")
+            throw IllegalStateException("사용불가로 변경할 수 없는 상태")
         }
 
         histories.add(
@@ -68,11 +68,11 @@ data class Voucher(
 
     fun statusToUsed(usedDate: LocalDate = LocalDate.now()) {
         if (status != VoucherStatus.USABLE) {
-            throw IllegalStateException("변경 불가능한 상품권 상태")
+            throw IllegalStateException("사용완료로 변경할 수 없는 상태")
         }
 
         if (usedDate.isBefore(usableStartDate) || usedDate.isAfter(usableEndDate)) {
-            throw IllegalStateException("변경 불가능한 상품권 상태")
+            throw IllegalStateException("유효기간을 벗어남")
         }
 
         histories.add(

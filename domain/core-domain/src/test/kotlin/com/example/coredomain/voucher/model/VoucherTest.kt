@@ -47,8 +47,8 @@ class VoucherTest : DescribeSpec({
                 vouchers[0].statusToUsed()
             }
 
-            it("IllegalStateException - 변경 불가능한 상품권 상태") {
-                exception.message shouldBe "변경 불가능한 상품권 상태"
+            it("IllegalStateException - 사용완료로 변경할 수 없는 상태") {
+                exception.message shouldBe "사용완료로 변경할 수 없는 상태"
             }
 
             it("상태=ISSUED") {
@@ -90,8 +90,8 @@ class VoucherTest : DescribeSpec({
                 vouchers[0].statusToUsable(LocalDate.now().plusYears(1))
             }
 
-            it("IllegalStateException - 변경 불가능한 상품권 상태") {
-                exception.message shouldBe "변경 불가능한 상품권 상태"
+            it("IllegalStateException - 사용가능으로 변경할 수 없는 상태") {
+                exception.message shouldBe "사용가능으로 변경할 수 없는 상태"
             }
 
             it("상태=USED") {
@@ -118,8 +118,8 @@ class VoucherTest : DescribeSpec({
                 vouchers[1].statusToUsable(LocalDate.now().plusYears(1))
             }
 
-            it("IllegalStateException - 변경 불가능한 상품권 상태") {
-                exception.message shouldBe "변경 불가능한 상품권 상태"
+            it("IllegalStateException - 사용가능으로 변경할 수 없는 상태") {
+                exception.message shouldBe "사용가능으로 변경할 수 없는 상태"
             }
 
             it("상태=UNUSABLE") {
@@ -181,8 +181,8 @@ class VoucherTest : DescribeSpec({
                 vouchers[3].statusToUsed(LocalDate.now().minusYears(2))
             }
 
-            it("IllegalStateException - 변경 불가능한 상품권 상태") {
-                exception.message shouldBe "변경 불가능한 상품권 상태"
+            it("IllegalStateException - 유효기간을 벗어남") {
+                exception.message shouldBe "유효기간을 벗어남"
             }
 
             it("상태=USABLE") {
@@ -195,8 +195,8 @@ class VoucherTest : DescribeSpec({
                 vouchers[3].statusToUsed(LocalDate.now().plusYears(2))
             }
 
-            it("IllegalStateException - 변경 불가능한 상품권 상태") {
-                exception.message shouldBe "변경 불가능한 상품권 상태"
+            it("IllegalStateException - 유효기간을 벗어남") {
+                exception.message shouldBe "유효기간을 벗어남"
             }
 
             it("상태=USABLE") {
