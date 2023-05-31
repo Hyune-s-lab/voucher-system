@@ -12,8 +12,8 @@ import io.kotest.matchers.shouldBe
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class VoucherServiceTest(
-    private val sut: VoucherCreateService,
+class VoucherIssueTest(
+    private val sut: VoucherIssueService,
     private val voucherRepository: VoucherRepository,
     private val contractRepository: ContractRepository,
     private val voucherProductRepository: VoucherProductRepository
@@ -21,9 +21,9 @@ class VoucherServiceTest(
     describe("상품권을 발행 합니다.") {
         context("존재하는 계약코드, 존재하는 상품권종코드") {
             val (contractCode, voucherProductCode) = "CT0002" to "PD0003"
-            val createVoucher = sut.issue(contractCode, voucherProductCode)
+            val issuedVoucher = sut.issue(contractCode, voucherProductCode)
 
-            val target = voucherRepository.findByCode(createVoucher.code)
+            val target = voucherRepository.findByCode(issuedVoucher.code)
 
             it("상태=ISSUED") {
                 target!!.status shouldBe VoucherStatus.ISSUED

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import java.time.LocalDate
 
 @Component
-class VoucherIssueValidateStrategy {
+class VoucherIssueValidationStrategy {
     fun validate(contract: Contract, voucherProduct: VoucherProduct, totalAmountOfIssuedVoucher: Long) {
         계약기간(contract)
         유효상품권종(contract, voucherProduct)

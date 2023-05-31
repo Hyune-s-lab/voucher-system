@@ -4,13 +4,13 @@ import com.example.coredomain.common.type.VoucherStatus
 import com.example.coredomain.contract.repository.ContractRepository
 import com.example.coredomain.voucher.model.Voucher
 import com.example.coredomain.voucher.repository.VoucherRepository
-import com.example.coredomain.voucher.service.strategy.VoucherIssueValidateStrategy
+import com.example.coredomain.voucher.service.strategy.VoucherIssueValidationStrategy
 import com.example.coredomain.voucherproduct.repository.VoucherProductRepository
 import org.springframework.stereotype.Service
 
 @Service
-class VoucherCreateService(
-    private val voucherIssueValidateStrategy: VoucherIssueValidateStrategy,
+class VoucherIssueService(
+    private val validationStrategy: VoucherIssueValidationStrategy,
     private val voucherRepository: VoucherRepository,
     private val contractRepository: ContractRepository,
     private val voucherProductRepository: VoucherProductRepository
@@ -24,7 +24,7 @@ class VoucherCreateService(
             .filter { it.status == VoucherStatus.ISSUED }
             .sumOf { it.product.price }
 
-        voucherIssueValidateStrategy.validate(contract, voucherProduct, totalAmountOfIssuedVoucher)
+        validationStrategy.validate(contract, voucherProduct, totalAmountOfIssuedVoucher)
 
         return voucherRepository.save(
             Voucher(
