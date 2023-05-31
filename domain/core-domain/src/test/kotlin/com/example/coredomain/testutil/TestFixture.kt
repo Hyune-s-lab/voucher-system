@@ -69,5 +69,21 @@ object TestFixture {
         )
     )
 
-    val 계약_전체 = 계약_계약기간_전 + 계약_계약기간_중 + 계약_계약기간_후
+    val 계약_총계약금액_50만원 = listOf(
+        Contract(
+            merchantId = "KP0001",
+            code = "CT0004",
+            name = "KP기업 총계약금액 50만원 계약 1",
+            totalAmountLimit = 500_000L,
+            startDate = LocalDate.now().minusYears(1),
+            endDate = LocalDate.now().plusYears(1),
+            description = "총계약금액 50만원",
+            voucherProducts = listOf(
+                상품권종[0],
+                상품권종[2],
+            )
+        )
+    )
+
+    val 계약_전체 = 계약_계약기간_전 + 계약_계약기간_중 + 계약_계약기간_후 + 계약_총계약금액_50만원
 }

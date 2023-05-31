@@ -73,6 +73,23 @@ class VoucherServiceTest(
                 exception.message shouldBe "유효하지 않은 상품권종"
             }
         }
+
+        context("존재하는 계약코드, 총계약금액 50만원 계약에 초과 발행") {
+            val (contractCode, voucherProductCode) = "CT0004" to "PD0003"
+
+            it("10만원 상품권종 5회 발행") {
+                repeat(5) {
+                    voucherService.issue(contractCode, voucherProductCode)
+                }
+            }
+
+            it("IllegalArgumentException - 상품권 발행한도 초과") {
+                val exception = shouldThrow<IllegalArgumentException> {
+                    voucherService.issue(contractCode, voucherProductCode)
+                }
+                exception.message shouldBe "상품권 발행한도 초과"
+            }
+        }
     }
 }) {
     init {
