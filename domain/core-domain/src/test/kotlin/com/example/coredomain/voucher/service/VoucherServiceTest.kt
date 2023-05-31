@@ -3,6 +3,7 @@ package com.example.coredomain.voucher.service
 import com.example.coredomain.common.type.VoucherStatus
 import com.example.coredomain.contract.repository.ContractRepository
 import com.example.coredomain.testutil.TestFixture
+import com.example.coredomain.voucher.repository.VoucherRepository
 import com.example.coredomain.voucherproduct.repository.VoucherProductRepository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.Spec
@@ -12,64 +13,63 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class VoucherServiceTest(
-    private val voucherService: VoucherService,
+    private val sut: VoucherCreateService,
+    private val voucherRepository: VoucherRepository,
     private val contractRepository: ContractRepository,
     private val voucherProductRepository: VoucherProductRepository
 ) : DescribeSpec({
     describe("상품권을 발행 합니다.") {
-        context("존재하는 계약코드와 상품권종코드를 입력받아 발행 합니다.") {
+        context("존재하는 계약코드, 존재하는 상품권종코드") {
             val (contractCode, voucherProductCode) = "CT0002" to "PD0003"
-            val createVoucher = voucherService.issue(contractCode, voucherProductCode)
+            val createVoucher = sut.issue(contractCode, voucherProductCode)
 
-            val target = voucherService.findByCode(createVoucher.code)
+            val target = voucherRepository.findByCode(createVoucher.code)
+
             it("상태=ISSUED") {
                 target!!.status shouldBe VoucherStatus.ISSUED
             }
         }
 
-        context("발행시작일자가 되지 않은 계약코드를 입력받아 발행 합니다.") {
+        context("존재하는 계약코드, 계약기간이 지금보다 이전") {
             val (contractCode, voucherProductCode) = "CT0001" to "PD0001"
 
-            val exception = shouldThrow<IllegalArgumentException> {
-                voucherService.issue(contractCode, voucherProductCode)
-            }
-
-            it("IllegalArgumentException - 유효하지 않은 계약") {
-                exception.message shouldBe "발행가능기간이 유효하지 않은 계약"
+            it("IllegalArgumentException - 유효하지 않은 계약기간") {
+                val exception = shouldThrow<IllegalArgumentException> {
+                    sut.issue(contractCode, voucherProductCode)
+                }
+                exception.message shouldBe "유효하지 않은 계약기간"
             }
         }
 
-
-        context("발행종료일자가 지난 계약코드를 입력받아 발행 합니다.") {
+        context("존재하는 계약코드, 계약기간이 지금보다 이후") {
             val (contractCode, voucherProductCode) = "CT0003" to "PD0001"
 
-            val exception = shouldThrow<IllegalArgumentException> {
-                voucherService.issue(contractCode, voucherProductCode)
-            }
-
-            it("IllegalArgumentException - 유효하지 않은 계약") {
-                exception.message shouldBe "발행가능기간이 유효하지 않은 계약"
+            it("IllegalArgumentException - 유효하지 않은 계약기간") {
+                val exception = shouldThrow<IllegalArgumentException> {
+                    sut.issue(contractCode, voucherProductCode)
+                }
+                exception.message shouldBe "유효하지 않은 계약기간"
             }
         }
 
-        context("존재하지 않는 계약코드를 입력받아 발행 합니다.") {
+        context("존재하지 않는 계약코드") {
             val (contractCode, voucherProductCode) = "CT000X" to "PD0002"
-            val exception = shouldThrow<IllegalArgumentException> {
-                voucherService.issue(contractCode, voucherProductCode)
-            }
 
             it("IllegalArgumentException - 존재하지 않는 계약") {
+                val exception = shouldThrow<IllegalArgumentException> {
+                    sut.issue(contractCode, voucherProductCode)
+                }
                 exception.message shouldBe "존재하지 않는 계약"
             }
         }
 
-        context("발행 가능한 계약이지만 발행 대상 상품권종에 없는 상품권종코드를 입력받아 발행 합니다.") {
+        context("존재하는 계약코드, 대상 상품권종에 없는 상품권종코드") {
             val (contractCode, voucherProductCode) = "CT0002" to "PD0002"
-            val exception = shouldThrow<IllegalArgumentException> {
-                voucherService.issue(contractCode, voucherProductCode)
-            }
 
             it("IllegalArgumentException - 유효하지 않은 상품권종") {
+                val exception = shouldThrow<IllegalArgumentException> {
+                    sut.issue(contractCode, voucherProductCode)
+                }
                 exception.message shouldBe "유효하지 않은 상품권종"
             }
         }
@@ -79,13 +79,13 @@ class VoucherServiceTest(
 
             it("10만원 상품권종 5회 발행") {
                 repeat(5) {
-                    voucherService.issue(contractCode, voucherProductCode)
+                    sut.issue(contractCode, voucherProductCode)
                 }
             }
 
             it("IllegalArgumentException - 상품권 발행한도 초과") {
                 val exception = shouldThrow<IllegalArgumentException> {
-                    voucherService.issue(contractCode, voucherProductCode)
+                    sut.issue(contractCode, voucherProductCode)
                 }
                 exception.message shouldBe "상품권 발행한도 초과"
             }

@@ -9,7 +9,7 @@ import io.kotest.matchers.shouldNotBe
 import java.time.LocalDate
 
 class VoucherTest : DescribeSpec({
-    val (contract, product) = TestFixture.계약_계약기간_중[0] to TestFixture.상품권종[0]
+    val (contract, product) = TestFixture.계약_유효기간유효[0] to TestFixture.상품권종[0]
     lateinit var vouchers: List<Voucher>
 
     describe("상품권 4장을 발행 합니다.") {

@@ -23,7 +23,7 @@ object TestFixture {
         ),
     )
 
-    val 계약_계약기간_전 = listOf(
+    val 계약_유효기간_지금보다_이전 = listOf(
         Contract(
             merchantId = "KP0001",
             code = "CT0001",
@@ -38,7 +38,7 @@ object TestFixture {
         )
     )
 
-    val 계약_계약기간_중 = listOf(
+    val 계약_유효기간유효 = listOf(
         Contract(
             merchantId = "KP0001",
             code = "CT0002",
@@ -53,7 +53,7 @@ object TestFixture {
         )
     )
 
-    val 계약_계약기간_후 = listOf(
+    val 계약_유효기간_지금보다_이후 = listOf(
         Contract(
             merchantId = "KP0001",
             code = "CT0003",
@@ -85,5 +85,5 @@ object TestFixture {
         )
     )
 
-    val 계약_전체 = 계약_계약기간_전 + 계약_계약기간_중 + 계약_계약기간_후 + 계약_총계약금액_50만원
+    val 계약_전체 = 계약_유효기간_지금보다_이전 + 계약_유효기간유효 + 계약_유효기간_지금보다_이후 + 계약_총계약금액_50만원
 }
