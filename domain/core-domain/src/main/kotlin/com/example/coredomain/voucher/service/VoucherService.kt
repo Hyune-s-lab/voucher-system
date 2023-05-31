@@ -32,6 +32,13 @@ class VoucherService(
             throw IllegalArgumentException("유효하지 않은 상품권종")
         }
 
+        val currentAmountSum = voucherRepository.findAllByContract(contract)
+            .sumOf { it.product.price }
+
+        if(contract.totalAmountLimit < currentAmountSum + voucherProduct.price) {
+            throw IllegalArgumentException("상품권 발행한도 초과")
+        }
+
         return voucherRepository.save(
             Voucher(
                 contract = contract,
