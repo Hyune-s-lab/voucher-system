@@ -53,15 +53,19 @@ data class Voucher(
         this.validityEndDate = usableEndDate
     }
 
-    fun statusToUnusable() {
-        if (!listOf(VoucherStatus.ISSUE, VoucherStatus.USABLE).contains(status)) {
+    fun statusToUnusable(voucherStatus: VoucherStatus) {
+        if (!VoucherStatus.POSSIBLE_TO_UNUSABLE.contains(status)) {
+            throw IllegalStateException("사용불가로 변경할 수 없는 상태")
+        }
+
+        if (!VoucherStatus.UNUSABLES.contains(voucherStatus)) {
             throw IllegalStateException("사용불가로 변경할 수 없는 상태")
         }
 
         histories.add(
             VoucherHistory(
                 voucherCode = code,
-                voucherStatus = VoucherStatus.UNUSABLE
+                voucherStatus = voucherStatus
             )
         )
     }
