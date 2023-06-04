@@ -20,10 +20,10 @@ class VoucherTest : DescribeSpec({
             Voucher(contract = contract, product = product),
         )
 
-        it("상태=ISSUED") {
+        it("상태=ISSUE") {
             vouchers.forEach {
-                it.status shouldBe VoucherStatus.ISSUED
-                it.issuedAt shouldNotBe null
+                it.status shouldBe VoucherStatus.ISSUE
+                it.issueAt shouldNotBe null
             }
         }
 
@@ -51,8 +51,8 @@ class VoucherTest : DescribeSpec({
                 exception.message shouldBe "사용완료로 변경할 수 없는 상태"
             }
 
-            it("상태=ISSUED") {
-                vouchers[0].status shouldBe VoucherStatus.ISSUED
+            it("상태=ISSUE") {
+                vouchers[0].status shouldBe VoucherStatus.ISSUE
             }
         }
 

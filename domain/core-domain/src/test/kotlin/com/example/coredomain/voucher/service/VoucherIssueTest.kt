@@ -25,8 +25,8 @@ class VoucherIssueTest(
 
             val target = voucherRepository.findByCode(issuedVoucher.code)
 
-            it("상태=ISSUED") {
-                target!!.status shouldBe VoucherStatus.ISSUED
+            it("상태=ISSUE") {
+                target!!.status shouldBe VoucherStatus.ISSUE
             }
         }
 

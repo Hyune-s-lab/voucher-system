@@ -20,11 +20,11 @@ class VoucherIssueService(
             ?: throw IllegalArgumentException("존재하지 않는 계약")
         val voucherProduct = voucherProductRepository.findByCode(voucherProductCode)
             ?: throw IllegalArgumentException("존재하지 않는 상품권종")
-        val totalAmountOfIssuedVoucher = voucherRepository.findAllByContract(contract)
-            .filter { it.status == VoucherStatus.ISSUED }
+        val totalAmountOfISSUEVoucher = voucherRepository.findAllByContract(contract)
+            .filter { it.status == VoucherStatus.ISSUE }
             .sumOf { it.product.price }
 
-        validationStrategy.validate(contract, voucherProduct, totalAmountOfIssuedVoucher)
+        validationStrategy.validate(contract, voucherProduct, totalAmountOfISSUEVoucher)
 
         return voucherRepository.save(
             Voucher(

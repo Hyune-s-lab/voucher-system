@@ -17,7 +17,7 @@ data class Voucher(
     val histories: MutableList<VoucherHistory> = mutableListOf(
         VoucherHistory(
             voucherCode = code,
-            voucherStatus = VoucherStatus.ISSUED
+            voucherStatus = VoucherStatus.ISSUE
         )
     ),
 ) {
@@ -25,21 +25,21 @@ data class Voucher(
         get() {
             usableEndDate?.let { date ->
                 if (LocalDate.now().isAfter(date)) {
-                    return VoucherStatus.EXPIRED
+                    return VoucherStatus.EXPIRE
                 }
             }
 
             return histories.last().voucherStatus
         }
 
-    val issuedAt: LocalDateTime
-        get() = histories.first { it.voucherStatus == VoucherStatus.ISSUED }.createAt
+    val issueAt: LocalDateTime
+        get() = histories.first { it.voucherStatus == VoucherStatus.ISSUE }.createAt
 
     val usableStartDate: LocalDate?
         get() = histories.firstOrNull { it.voucherStatus == VoucherStatus.USABLE }?.createAt?.toLocalDate()
 
     fun statusToUsable(usableEndDate: LocalDate) {
-        if (status != VoucherStatus.ISSUED) {
+        if (status != VoucherStatus.ISSUE) {
             throw IllegalStateException("사용가능으로 변경할 수 없는 상태")
         }
 
@@ -54,7 +54,7 @@ data class Voucher(
     }
 
     fun statusToUnusable() {
-        if (!listOf(VoucherStatus.ISSUED, VoucherStatus.USABLE).contains(status)) {
+        if (!listOf(VoucherStatus.ISSUE, VoucherStatus.USABLE).contains(status)) {
             throw IllegalStateException("사용불가로 변경할 수 없는 상태")
         }
 
