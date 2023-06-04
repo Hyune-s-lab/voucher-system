@@ -29,8 +29,8 @@ class VoucherTest : DescribeSpec({
 
         it("usableStartDate=null, usableEndDate=null") {
             vouchers.forEach {
-                it.usableStartDate shouldBe null
-                it.usableEndDate shouldBe null
+                it.validityStartDate shouldBe null
+                it.validityEndDate shouldBe null
             }
         }
 
@@ -64,8 +64,8 @@ class VoucherTest : DescribeSpec({
             }
 
             it("usableStartDate=not null, usableEndDate=not null") {
-                vouchers[0].usableStartDate shouldNotBe null
-                vouchers[0].usableEndDate shouldNotBe null
+                vouchers[0].validityStartDate shouldNotBe null
+                vouchers[0].validityEndDate shouldNotBe null
             }
 
             it("history size=2") {
@@ -137,8 +137,8 @@ class VoucherTest : DescribeSpec({
             }
 
             it("usableStartDate=not null, usableEndDate=not null") {
-                vouchers[2].usableStartDate shouldNotBe null
-                vouchers[2].usableEndDate shouldNotBe null
+                vouchers[2].validityStartDate shouldNotBe null
+                vouchers[2].validityEndDate shouldNotBe null
             }
 
             it("history size=2") {
@@ -167,8 +167,8 @@ class VoucherTest : DescribeSpec({
             }
 
             it("usableStartDate=not null, usableEndDate=not null") {
-                vouchers[3].usableStartDate shouldNotBe null
-                vouchers[3].usableEndDate shouldNotBe null
+                vouchers[3].validityStartDate shouldNotBe null
+                vouchers[3].validityEndDate shouldNotBe null
             }
 
             it("history size=2") {

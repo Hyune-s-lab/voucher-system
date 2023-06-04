@@ -9,7 +9,7 @@ import java.util.*
 
 data class Voucher(
     val code: String = UUID.randomUUID().toString().uppercase().replace("-", ""),
-    var usableEndDate: LocalDate? = null,
+    var validityEndDate: LocalDate? = null,
     val description: String? = null,
 
     val contract: Contract,
@@ -23,7 +23,7 @@ data class Voucher(
 ) {
     val status: VoucherStatus
         get() {
-            usableEndDate?.let { date ->
+            validityEndDate?.let { date ->
                 if (LocalDate.now().isAfter(date)) {
                     return VoucherStatus.EXPIRE
                 }
@@ -35,7 +35,7 @@ data class Voucher(
     val issueAt: LocalDateTime
         get() = histories.first { it.voucherStatus == VoucherStatus.ISSUE }.createAt
 
-    val usableStartDate: LocalDate?
+    val validityStartDate: LocalDate?
         get() = histories.firstOrNull { it.voucherStatus == VoucherStatus.USABLE }?.createAt?.toLocalDate()
 
     fun statusToUsable(usableEndDate: LocalDate) {
@@ -50,7 +50,7 @@ data class Voucher(
             )
         )
 
-        this.usableEndDate = usableEndDate
+        this.validityEndDate = usableEndDate
     }
 
     fun statusToUnusable() {
@@ -71,7 +71,7 @@ data class Voucher(
             throw IllegalStateException("사용완료로 변경할 수 없는 상태")
         }
 
-        if (usedDate.isBefore(usableStartDate) || usedDate.isAfter(usableEndDate)) {
+        if (usedDate.isBefore(validityStartDate) || usedDate.isAfter(validityEndDate)) {
             throw IllegalStateException("유효기간을 벗어남")
         }
 
