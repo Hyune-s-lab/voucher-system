@@ -2,6 +2,8 @@ package com.example.coredomain.voucher.service
 
 import com.example.coredomain.common.type.VoucherStatus
 import com.example.coredomain.contract.repository.ContractRepository
+import com.example.coredomain.support.exception.BusinessException
+import com.example.coredomain.support.exception.ErrorType
 import com.example.coredomain.testutil.TestFixture
 import com.example.coredomain.voucher.repository.VoucherRepository
 import com.example.coredomain.voucherproduct.repository.VoucherProductRepository
@@ -33,44 +35,44 @@ class VoucherIssueTest(
         context("존재하는 계약코드, 계약기간이 지금보다 이전") {
             val (contractCode, voucherProductCode) = "CT0001" to "PD0001"
 
-            it("IllegalArgumentException - 유효하지 않은 계약기간") {
-                val exception = shouldThrow<IllegalArgumentException> {
+            it("BusinessException - INVALID_VALIDITY_PERIOD_OF_CONTRACT") {
+                val exception = shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
                 }
-                exception.message shouldBe "유효하지 않은 계약기간"
+                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_CONTRACT
             }
         }
 
         context("존재하는 계약코드, 계약기간이 지금보다 이후") {
             val (contractCode, voucherProductCode) = "CT0003" to "PD0001"
 
-            it("IllegalArgumentException - 유효하지 않은 계약기간") {
-                val exception = shouldThrow<IllegalArgumentException> {
+            it("BusinessException - INVALID_VALIDITY_PERIOD_OF_CONTRACT") {
+                val exception = shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
                 }
-                exception.message shouldBe "유효하지 않은 계약기간"
+                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_CONTRACT
             }
         }
 
         context("존재하지 않는 계약코드") {
             val (contractCode, voucherProductCode) = "CT000X" to "PD0002"
 
-            it("IllegalArgumentException - 존재하지 않는 계약") {
-                val exception = shouldThrow<IllegalArgumentException> {
+            it("BusinessException - NOT_FOUND_CONTRACT") {
+                val exception = shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
                 }
-                exception.message shouldBe "존재하지 않는 계약"
+                exception.errorType shouldBe ErrorType.NOT_FOUND_CONTRACT
             }
         }
 
         context("존재하는 계약코드, 대상 상품권종에 없는 상품권종코드") {
             val (contractCode, voucherProductCode) = "CT0002" to "PD0002"
 
-            it("IllegalArgumentException - 유효하지 않은 상품권종") {
-                val exception = shouldThrow<IllegalArgumentException> {
+            it("BusinessException - INVALID_VOUCHER_PRODUCT") {
+                val exception = shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
                 }
-                exception.message shouldBe "유효하지 않은 상품권종"
+                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_PRODUCT
             }
         }
 
@@ -83,11 +85,11 @@ class VoucherIssueTest(
                 }
             }
 
-            it("IllegalArgumentException - 상품권 발행한도 초과") {
-                val exception = shouldThrow<IllegalArgumentException> {
+            it("BusinessException - INVALID_TOTAL_AMOUNT_LIMIT_OF_CONTRACT") {
+                val exception = shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
                 }
-                exception.message shouldBe "상품권 발행한도 초과"
+                exception.errorType shouldBe ErrorType.INVALID_TOTAL_AMOUNT_LIMIT_OF_CONTRACT
             }
         }
     }

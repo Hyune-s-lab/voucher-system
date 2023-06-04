@@ -2,6 +2,8 @@ package com.example.coredomain.voucher.service
 
 import com.example.coredomain.common.type.VoucherStatus
 import com.example.coredomain.contract.repository.ContractRepository
+import com.example.coredomain.support.exception.BusinessException
+import com.example.coredomain.support.exception.ErrorType
 import com.example.coredomain.voucher.model.Voucher
 import com.example.coredomain.voucher.repository.VoucherRepository
 import com.example.coredomain.voucher.service.strategy.VoucherIssueValidationStrategy
@@ -17,9 +19,9 @@ class VoucherIssueService(
 ) {
     fun issue(contractCode: String, voucherProductCode: String): Voucher {
         val contract = contractRepository.findByCode(contractCode)
-            ?: throw IllegalArgumentException("존재하지 않는 계약")
+            ?: throw BusinessException(ErrorType.NOT_FOUND_CONTRACT)
         val voucherProduct = voucherProductRepository.findByCode(voucherProductCode)
-            ?: throw IllegalArgumentException("존재하지 않는 상품권종")
+            ?: throw BusinessException(ErrorType.NOT_FOUND_VOUCHER_PRODUCT)
         val totalAmountOfISSUEVoucher = voucherRepository.findAllByContract(contract)
             .filter { it.status == VoucherStatus.ISSUE }
             .sumOf { it.product.price }

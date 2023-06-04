@@ -1,6 +1,8 @@
 package com.example.adminapi.controller
 
 import com.example.adminapi.controller.common.VoucherProductResponse
+import com.example.coredomain.support.exception.BusinessException
+import com.example.coredomain.support.exception.ErrorType
 import com.example.coredomain.voucherproduct.service.VoucherProductService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -18,6 +20,6 @@ class VoucherProductController(
     fun findOne(@PathVariable voucherProductCode: String): VoucherProductResponse {
         return voucherProductService.findByCode(voucherProductCode)?.let {
             VoucherProductResponse(it)
-        } ?: throw IllegalArgumentException("존재하지 않는 상품권종입니다.")
+        } ?: throw BusinessException(ErrorType.NOT_FOUND_VOUCHER_PRODUCT)
     }
 }

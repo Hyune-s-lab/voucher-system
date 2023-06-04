@@ -2,6 +2,8 @@ package com.example.coredomain.voucher.model
 
 import com.example.coredomain.common.type.VoucherStatus
 import com.example.coredomain.contract.model.Contract
+import com.example.coredomain.support.exception.BusinessException
+import com.example.coredomain.support.exception.ErrorType
 import com.example.coredomain.voucherproduct.model.VoucherProduct
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -40,7 +42,7 @@ data class Voucher(
 
     fun statusToUsable(usableEndDate: LocalDate) {
         if (status != VoucherStatus.ISSUE) {
-            throw IllegalStateException("사용가능으로 변경할 수 없는 상태")
+            throw BusinessException(ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE)
         }
 
         histories.add(
@@ -55,11 +57,11 @@ data class Voucher(
 
     fun statusToUnusable(voucherStatus: VoucherStatus) {
         if (!VoucherStatus.POSSIBLE_TO_UNUSABLE.contains(status)) {
-            throw IllegalStateException("사용불가로 변경할 수 없는 상태")
+            throw BusinessException(ErrorType.INVALID_VOUCHER_STATUS_TO_UNUSABLE)
         }
 
         if (!VoucherStatus.UNUSABLES.contains(voucherStatus)) {
-            throw IllegalStateException("사용불가로 변경할 수 없는 상태")
+            throw BusinessException(ErrorType.INVALID_VOUCHER_STATUS_TO_UNUSABLE)
         }
 
         histories.add(
@@ -72,11 +74,11 @@ data class Voucher(
 
     fun statusToUsed(usedDate: LocalDate = LocalDate.now()) {
         if (status != VoucherStatus.USABLE) {
-            throw IllegalStateException("사용완료로 변경할 수 없는 상태")
+            throw BusinessException(ErrorType.INVALID_VOUCHER_STATUS_TO_USED)
         }
 
         if (usedDate.isBefore(validityStartDate) || usedDate.isAfter(validityEndDate)) {
-            throw IllegalStateException("유효기간을 벗어남")
+            throw BusinessException(ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER)
         }
 
         histories.add(

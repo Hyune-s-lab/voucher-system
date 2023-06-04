@@ -1,6 +1,8 @@
 package com.example.coredomain.voucher.model
 
 import com.example.coredomain.common.type.VoucherStatus
+import com.example.coredomain.support.exception.BusinessException
+import com.example.coredomain.support.exception.ErrorType
 import com.example.coredomain.testutil.TestFixture
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -43,12 +45,12 @@ class VoucherTest : DescribeSpec({
 
     describe("상품권0 상태 변경: 발행 -> 사용완료(예외) -> 사용가능 -> 사용완료 -> 사용가능(예외)") {
         context("발행 -> 사용완료(예외)") {
-            val exception = shouldThrow<IllegalStateException> {
-                vouchers[0].statusToUsed()
-            }
+            it("BusinessException - INVALID_VOUCHER_STATUS_TO_USED") {
+                val exception = shouldThrow<BusinessException> {
+                    vouchers[0].statusToUsed()
+                }
 
-            it("IllegalStateException - 사용완료로 변경할 수 없는 상태") {
-                exception.message shouldBe "사용완료로 변경할 수 없는 상태"
+                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USED
             }
 
             it("상태=ISSUE") {
@@ -86,12 +88,12 @@ class VoucherTest : DescribeSpec({
         }
 
         context("사용완료 -> 사용가능(예외)") {
-            val exception = shouldThrow<IllegalStateException> {
-                vouchers[0].statusToUsable(LocalDate.now().plusYears(1))
-            }
+            it("BusinessException - INVALID_VOUCHER_STATUS_TO_USABLE") {
+                val exception = shouldThrow<BusinessException> {
+                    vouchers[0].statusToUsable(LocalDate.now().plusYears(1))
+                }
 
-            it("IllegalStateException - 사용가능으로 변경할 수 없는 상태") {
-                exception.message shouldBe "사용가능으로 변경할 수 없는 상태"
+                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE
             }
 
             it("상태=USED") {
@@ -114,12 +116,12 @@ class VoucherTest : DescribeSpec({
         }
 
         context("사용불가_일반 -> 사용가능(예외)") {
-            val exception = shouldThrow<IllegalStateException> {
-                vouchers[1].statusToUsable(LocalDate.now().plusYears(1))
-            }
+            it("BusinessException - INVALID_VOUCHER_STATUS_TO_USABLE") {
+                val exception = shouldThrow<BusinessException> {
+                    vouchers[1].statusToUsable(LocalDate.now().plusYears(1))
+                }
 
-            it("IllegalStateException - 사용가능으로 변경할 수 없는 상태") {
-                exception.message shouldBe "사용가능으로 변경할 수 없는 상태"
+                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE
             }
 
             it("상태=UNUSABLE") {
@@ -177,12 +179,12 @@ class VoucherTest : DescribeSpec({
         }
 
         context("사용가능 -> 사용완료(예외): 유효기간시작일자 전") {
-            val exception = shouldThrow<IllegalStateException> {
-                vouchers[3].statusToUsed(LocalDate.now().minusYears(2))
-            }
+            it("BusinessException - INVALID_VALIDITY_PERIOD_OF_VOUCHER") {
+                val exception = shouldThrow<BusinessException> {
+                    vouchers[3].statusToUsed(LocalDate.now().minusYears(2))
+                }
 
-            it("IllegalStateException - 유효기간을 벗어남") {
-                exception.message shouldBe "유효기간을 벗어남"
+                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER
             }
 
             it("상태=USABLE") {
@@ -191,12 +193,12 @@ class VoucherTest : DescribeSpec({
         }
 
         context("사용가능 -> 사용완료(예외): 유효기간시작일자 후") {
-            val exception = shouldThrow<IllegalStateException> {
-                vouchers[3].statusToUsed(LocalDate.now().plusYears(2))
-            }
+            it("BusinessException - INVALID_VALIDITY_PERIOD_OF_VOUCHER") {
+                val exception = shouldThrow<BusinessException> {
+                    vouchers[3].statusToUsed(LocalDate.now().plusYears(2))
+                }
 
-            it("IllegalStateException - 유효기간을 벗어남") {
-                exception.message shouldBe "유효기간을 벗어남"
+                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER
             }
 
             it("상태=USABLE") {
