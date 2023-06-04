@@ -46,11 +46,11 @@ class VoucherTest : DescribeSpec({
     describe("상품권0 상태 변경: 발행 -> 사용완료(예외) -> 사용가능 -> 사용완료 -> 사용가능(예외)") {
         context("발행 -> 사용완료(예외)") {
             it("BusinessException - INVALID_VOUCHER_STATUS_TO_USED") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     vouchers[0].statusToUsed()
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USED
                 }
-
-                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USED
             }
 
             it("상태=ISSUE") {
@@ -89,11 +89,11 @@ class VoucherTest : DescribeSpec({
 
         context("사용완료 -> 사용가능(예외)") {
             it("BusinessException - INVALID_VOUCHER_STATUS_TO_USABLE") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     vouchers[0].statusToUsable(LocalDate.now().plusYears(1))
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE
                 }
-
-                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE
             }
 
             it("상태=USED") {
@@ -117,11 +117,11 @@ class VoucherTest : DescribeSpec({
 
         context("사용불가_일반 -> 사용가능(예외)") {
             it("BusinessException - INVALID_VOUCHER_STATUS_TO_USABLE") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     vouchers[1].statusToUsable(LocalDate.now().plusYears(1))
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE
                 }
-
-                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_STATUS_TO_USABLE
             }
 
             it("상태=UNUSABLE") {
@@ -180,11 +180,11 @@ class VoucherTest : DescribeSpec({
 
         context("사용가능 -> 사용완료(예외): 유효기간시작일자 전") {
             it("BusinessException - INVALID_VALIDITY_PERIOD_OF_VOUCHER") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     vouchers[3].statusToUsed(LocalDate.now().minusYears(2))
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER
                 }
-
-                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER
             }
 
             it("상태=USABLE") {
@@ -194,11 +194,11 @@ class VoucherTest : DescribeSpec({
 
         context("사용가능 -> 사용완료(예외): 유효기간시작일자 후") {
             it("BusinessException - INVALID_VALIDITY_PERIOD_OF_VOUCHER") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     vouchers[3].statusToUsed(LocalDate.now().plusYears(2))
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER
                 }
-
-                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_VOUCHER
             }
 
             it("상태=USABLE") {

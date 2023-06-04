@@ -36,10 +36,11 @@ class VoucherIssueTest(
             val (contractCode, voucherProductCode) = "CT0001" to "PD0001"
 
             it("BusinessException - INVALID_VALIDITY_PERIOD_OF_CONTRACT") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_CONTRACT
                 }
-                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_CONTRACT
             }
         }
 
@@ -47,10 +48,11 @@ class VoucherIssueTest(
             val (contractCode, voucherProductCode) = "CT0003" to "PD0001"
 
             it("BusinessException - INVALID_VALIDITY_PERIOD_OF_CONTRACT") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_CONTRACT
                 }
-                exception.errorType shouldBe ErrorType.INVALID_VALIDITY_PERIOD_OF_CONTRACT
             }
         }
 
@@ -58,10 +60,11 @@ class VoucherIssueTest(
             val (contractCode, voucherProductCode) = "CT000X" to "PD0002"
 
             it("BusinessException - NOT_FOUND_CONTRACT") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
+                }.also {
+                    it.errorType shouldBe ErrorType.NOT_FOUND_CONTRACT
                 }
-                exception.errorType shouldBe ErrorType.NOT_FOUND_CONTRACT
             }
         }
 
@@ -69,10 +72,11 @@ class VoucherIssueTest(
             val (contractCode, voucherProductCode) = "CT0002" to "PD0002"
 
             it("BusinessException - INVALID_VOUCHER_PRODUCT") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_VOUCHER_PRODUCT
                 }
-                exception.errorType shouldBe ErrorType.INVALID_VOUCHER_PRODUCT
             }
         }
 
@@ -86,10 +90,11 @@ class VoucherIssueTest(
             }
 
             it("BusinessException - INVALID_TOTAL_AMOUNT_LIMIT_OF_CONTRACT") {
-                val exception = shouldThrow<BusinessException> {
+                shouldThrow<BusinessException> {
                     sut.issue(contractCode, voucherProductCode)
+                }.also {
+                    it.errorType shouldBe ErrorType.INVALID_TOTAL_AMOUNT_LIMIT_OF_CONTRACT
                 }
-                exception.errorType shouldBe ErrorType.INVALID_TOTAL_AMOUNT_LIMIT_OF_CONTRACT
             }
         }
     }
